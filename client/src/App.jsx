@@ -14,24 +14,29 @@ import InterviewReport from "./pages/InterviewReport.jsx";
 export const ServerUrl = "http://localhost:8000";
 
 function App() {
+  const token = localStorage.getItem("token");
+  if (token) {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  }
+
   const dispatch = useDispatch();
   useEffect(() => {
-  const getUser = async () => {
-    try {
-      const result = await axios.get(
-        `${ServerUrl}/api/user/current-user`,
-        { withCredentials: true }
-      );
+    const getUser = async () => {
+      try {
+        const result = await axios.get(
+          `${ServerUrl}/api/user/current-user`,
+          { withCredentials: true }
+        );
 
-      dispatch(setUserData(result.data.user));
+        dispatch(setUserData(result.data.user));
 
-    } catch (error) {
-      console.log("USER ERROR:", error.response?.data);
-    }
-  };
+      } catch (error) {
+        console.log("USER ERROR:", error.response?.data);
+      }
+    };
 
-  getUser();
-}, []);
+    getUser();
+  }, []);
 
   return (
     <Routes>

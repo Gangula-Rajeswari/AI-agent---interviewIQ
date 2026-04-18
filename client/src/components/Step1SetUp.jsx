@@ -91,7 +91,7 @@ function Step1SetUp({ onStart }) {
 
             console.log("FULL RESPONSE:", result.data);
 
-            // ✅ PRINT REQUIRED DATA
+            //  PRINT REQUIRED DATA
             console.log("USERNAME:", result.data.user?.name);
             console.log("INTERVIEW ID:", result.data.interviewId);
             console.log("CREDITS:", result.data.creditsLeft);
