@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaCheckCircle } from "react-icons/fa";
@@ -16,51 +15,32 @@ function Pricing() {
       name: "Free",
       price: "₹0",
       credits: 100,
-      badge: "Default",
-      description: "Perfect for beginners starting interview preparation.",
-      features: [
-        "100 AI Interview Credits",
-        "Basic Performance Report",
-        "Voice Interview Access",
-        "Limited History Tracking",
-      ],
+      description: "Perfect for beginners",
+      features: ["100 AI Credits", "Basic Report"],
     },
     {
       id: "starter",
       name: "Starter Pack",
       price: "₹100",
       credits: 150,
-      description: "Great for focused practice and skill improvement.",
-      features: [
-        "150 AI Interview Credits",
-        "Detailed Feedback",
-        "Performance Analytics",
-        "Full Interview History",
-      ],
+      description: "Good for practice",
+      features: ["150 Credits", "Full History"],
     },
     {
       id: "pro",
       name: "Pro Pack",
       price: "₹500",
       credits: 650,
-      badge: "Best Value",
-      highlight: true,
-      description: "Best value for serious job preparation.",
-      features: [
-        "650 AI Interview Credits",
-        "Advanced AI Feedback",
-        "Skill Trend Analysis",
-        "Priority AI Processing",
-      ],
+      description: "Best value",
+      features: ["650 Credits", "Advanced Analytics"],
     },
   ];
 
-  
   const handlePayment = async (plan) => {
     try {
       setLoadingPlan(plan.id);
 
-
+  
       const res = await fetch(`${ServerUrl}/api/payment/order`, {
         method: "POST",
         headers: {
@@ -76,23 +56,27 @@ function Pricing() {
 
       const order = await res.json();
 
+    
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: order.amount,
         currency: "INR",
-        name: "InterviewIQ AI",
-        description: plan.name,
+        name: "InterviewIQ",
         order_id: order.id,
 
         handler: async function (response) {
-      
+         
           await fetch(`${ServerUrl}/api/payment/verify`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             credentials: "include",
-            body: JSON.stringify(response),
+            body: JSON.stringify({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            }),
           });
 
           alert("Payment Successful!");
@@ -110,16 +94,15 @@ function Pricing() {
 
       const rzp = new window.Razorpay(options);
       rzp.open();
-
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.log(err);
       alert("Payment failed");
     } finally {
       setLoadingPlan(null);
     }
   };
 
-  return (
+ return (
     <div className="min-h-screen bg-[#f6faf9] px-6 py-12">
       {/* HEADER */}
       <div className="max-w-6xl mx-auto flex items-center justify-center relative mb-10">
