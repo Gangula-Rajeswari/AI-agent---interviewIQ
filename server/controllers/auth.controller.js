@@ -60,7 +60,7 @@ export const logOut = async (req, res) => {
         res.clearCookie("token", {
             httpOnly: true,
             sameSite: "lax",
-            secure: false,
+            secure: true,
             path: "/"
         });
 
