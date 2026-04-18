@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft, FaCheckCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { ServerUrl } from "../App.jsx";
 
 function Pricing() {
   const navigate = useNavigate();
