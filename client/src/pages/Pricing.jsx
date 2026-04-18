@@ -59,8 +59,8 @@ function Pricing() {
     try {
       setLoadingPlan(plan.id);
 
-      // 1️⃣ Create order from backend
-      const res = await fetch("http://localhost:8000/api/payment/order", {
+
+      const res = await fetch(`${ServerUrl}/api/payment/order`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -75,7 +75,6 @@ function Pricing() {
 
       const order = await res.json();
 
-      // 2️⃣ Open Razorpay popup
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: order.amount,
@@ -85,8 +84,8 @@ function Pricing() {
         order_id: order.id,
 
         handler: async function (response) {
-          // 3️⃣ Verify payment
-          await fetch("http://localhost:8000/api/payment/verify", {
+      
+          await fetch(`${ServerUrl}/api/payment/verify`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
