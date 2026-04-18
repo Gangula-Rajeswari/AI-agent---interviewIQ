@@ -11,7 +11,7 @@ import Pricing from "./pages/Pricing.jsx";
 import InterviewReport from "./pages/InterviewReport.jsx";
 //import History from "./pages/History.jsx";
 
-export const ServerUrl = "http://localhost:8000";
+export const ServerUrl = "https://ai-agent-interviewiq.onrender.com";
 
 function App() {
   const token = localStorage.getItem("token");
