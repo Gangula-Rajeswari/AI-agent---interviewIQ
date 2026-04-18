@@ -13,7 +13,7 @@ function Step2Interview({ interviewData, onFinish }) {
   const userName = interviewData?.userName || "User";
   const interviewId = interviewData?.interviewId;
 
-  const ServerUrl = "http://localhost:8000";
+  const ServerUrl = "https://ai-agent-interviewiq.onrender.com";
 
   const [isIntroPhase, setIsIntroPhase] = useState(true);
   const recognitionRef = useRef(null);
@@ -243,7 +243,7 @@ function Step2Interview({ interviewData, onFinish }) {
         { withCredentials: true }
       );
 
-      console.log("🔥 FINAL RESULT:", res.data);
+      console.log("FINAL RESULT:", res.data);
       onFinish(res.data);
 
     } catch (err) {
