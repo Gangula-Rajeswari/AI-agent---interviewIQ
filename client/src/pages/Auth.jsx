@@ -108,7 +108,7 @@ function Auth({ isModel = false }) {
 
         {/* FOOTER */}
         <p className="text-xs text-gray-400 text-center mt-6">
-          Secure login powered by Google 🔐
+          Secure login powered by Google
         </p>
       </motion.div>
     </div>
