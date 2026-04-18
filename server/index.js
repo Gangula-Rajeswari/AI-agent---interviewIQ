@@ -29,12 +29,11 @@ app.use("/api/user", userRouter);
 app.use("/api/interview", interviewRouter);
 app.use("/api/payment", paymentRouter);
 
-// 🔥 START SERVER AFTER DB CONNECT
 const startServer = async () => {
     try {
         await connectDb();
         app.listen(8000, () => {
-            console.log("🚀 Server running on port 8000");
+            console.log("Server running on port 8000");
         });
     } catch (error) {
         console.log("DB connection failed:", error);
