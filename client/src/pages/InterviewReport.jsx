@@ -17,7 +17,7 @@ function InterviewReport() {
                 console.log(result.data);
                 setReport(result.data);
             } catch (error) {
-                console.log("❌ ERROR:", error.message);
+                console.log("ERROR:", error.message);
             }
         };
 
