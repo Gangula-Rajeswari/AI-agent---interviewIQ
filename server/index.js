@@ -19,7 +19,7 @@ app.use(cookieParser());
 
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: "https://ai-agent-interviewiq-client.onrender.com",
     credentials: true
 }));
 
