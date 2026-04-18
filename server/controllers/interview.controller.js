@@ -221,9 +221,9 @@ export const submitAnswer = async (req, res) => {
 
         const question = interview.questions[questionIndex];
 
-        // ❌ Empty Answer
+    
         if (!answer || answer.trim() === "") {
-            question.answer = ""; // ✅ ADD THIS
+            question.answer = ""; 
             question.score = 0;
             question.feedback = "No answer submitted";
 
@@ -294,7 +294,7 @@ Return JSON:
         }
         const rawScore = parsed.finalScore || 0;
 
-        // 🔥 NORMALIZE SCORE (important)
+      
         let normalizedScore = 0;
 
         if (rawScore > 25) {
@@ -310,13 +310,12 @@ Return JSON:
             confidence: parsed.confidence || 0,
             communication: parsed.communication || 0,
             correctness: parsed.correctness || 0,
-            score: normalizedScore,   // ✅ FIXED
+            score: normalizedScore,  
             feedback: parsed.feedback || ""
         });
 
         await interview.save();
 
-        // ✅ RETURN FULL DATA
         return res.json({
             answer,
             confidence: parsed.confidence || 0,
@@ -357,7 +356,7 @@ export const finishInterview = async (req, res) => {
         
         const finalScore = Math.min((score / total / 25) * 10, 10);
 
-        // ✅ SAVE IMPORTANT DATA
+       
         interview.finalScore = Number(finalScore.toFixed(1));
         interview.status = "completed";
 
@@ -381,15 +380,19 @@ export const getMyInterviews = async (req, res) => {
         const interviews = await Interview.find({ userId: req.userId })
             .sort({ createdAt: -1 });
 
-        const updated = interviews.map(interview => {
+        const updated = interviews.map((interview) => {
 
             const total = interview.questions.length || 1;
 
+            let completedCount = 0;
             let sum = 0;
-            interview.questions.forEach(q => {
-                let score = q.score || 0;
 
-                // convert 0–25 → 0–10
+            interview.questions.forEach((q) => {
+                if (q.answer && q.answer.trim() !== "") {
+                    completedCount++;
+                }
+
+                let score = q.score || 0;
                 let converted = score <= 10 ? score : (score / 25) * 10;
 
                 sum += converted;
@@ -397,14 +400,17 @@ export const getMyInterviews = async (req, res) => {
 
             const finalScore = sum / total;
 
+            const isCompleted = completedCount === total;
+
             return {
                 _id: interview._id,
                 role: interview.role,
                 experience: interview.experience,
                 mode: interview.mode,
                 createdAt: interview.createdAt,
-                status: "completed", // ✅ force correct
-                finalScore: Number(finalScore.toFixed(1))
+                status: isCompleted ? "completed" : "in-progress",
+                finalScore: Number(finalScore.toFixed(1)),
+                questionWiseScore: interview.questions
             };
         });
 
